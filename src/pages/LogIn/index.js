@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
 import {Formik} from 'formik';
@@ -30,64 +31,71 @@ export default function LogIn() {
 
   return (
     <View style={[GeneralStyles.container, styles.container]}>
-      <Avatar style={styles.Avatar} />
-      <Formik
-        initialValues={{email: '', password: ''}}
-        onSubmit={handleSubmit}
-        validationSchema={validationScheme}>
-        {({
-          handleSubmit,
-          handleChange,
-          values,
-          errors,
-          touched,
-          isValid,
-          dirty,
-        }) => (
-          <View style={styles.InputContainer}>
-            <Text style={styles.InputText}>E-mail</Text>
-            <TextInput
-              style={styles.TextInput}
-              placeholder="E-Mail"
-              placeholderTextColor={colors.secondary}
-              onChangeText={handleChange('email')}
-              value={values.email}
-              keyboardType="email-address"
-            />
-            {
-              // If the user touched the input and the input is not valid, show the error message
-              touched.email && errors.email && (
-                <Text style={styles.ErrorText}> {errors.email} </Text>
-              )
-            }
-            <Text style={styles.InputText}>Password</Text>
-            <TextInput
-              style={styles.TextInput}
-              placeholder="Password"
-              placeholderTextColor={colors.secondary}
-              onChangeText={handleChange('password')}
-              secureTextEntry={true}
-              value={values.password}
-            />
-            {
-              // If the user touched the input and the input is not valid, show the error message
-              touched.password && errors.password && (
-                <Text style={styles.ErrorText}>{errors.password}</Text>
-              )
-            }
-            <TouchableOpacity
-              style={
-                !isValid || !dirty
-                  ? [styles.ButtonContainer, {opacity: 0.7}]
-                  : styles.ButtonContainer
+      <ScrollView>
+        <Avatar
+          style={styles.Avatar}
+          source={require('../../../assets/animations/simpleUserIcon.json')}
+        />
+        <Formik
+          initialValues={{email: '', password: ''}}
+          onSubmit={handleSubmit}
+          validationSchema={validationScheme}>
+          {({
+            handleSubmit,
+            handleChange,
+            values,
+            errors,
+            touched,
+            isValid,
+            dirty,
+          }) => (
+            <View style={styles.InputContainer}>
+              <Text style={styles.InputText}>E-mail</Text>
+              <TextInput
+                style={styles.TextInput}
+                placeholder="E-Mail"
+                placeholderTextColor={colors.secondary}
+                onChangeText={handleChange('email')}
+                value={values.email}
+                keyboardType="email-address"
+                autoCapitalize={'none'}
+              />
+              {
+                // If the user touched the input and the input is not valid, show the error message
+                touched.email && errors.email && (
+                  <Text style={styles.ErrorText}> {errors.email} </Text>
+                )
               }
-              onPress={handleSubmit}
-              disabled={!isValid || !dirty}>
-              <Text style={styles.ButtonText}>Log In</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </Formik>
+              <Text style={styles.InputText}>Password</Text>
+              <TextInput
+                style={styles.TextInput}
+                placeholder="Password"
+                placeholderTextColor={colors.secondary}
+                onChangeText={handleChange('password')}
+                secureTextEntry
+                autoCapitalize={'none'}
+                value={values.password}
+              />
+              {
+                // If the user touched the input and the input is not valid, show the error message
+                touched.password && errors.password && (
+                  <Text style={styles.ErrorText}>{errors.password}</Text>
+                )
+              }
+              <TouchableOpacity
+                style={
+                  !isValid || !dirty
+                    ? [styles.ButtonContainer, {opacity: 0.7}]
+                    : styles.ButtonContainer
+                }
+                onPress={handleSubmit}
+                disabled={!isValid || !dirty}>
+                <Text style={styles.ButtonText}>Log In</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </Formik>
+      </ScrollView>
     </View>
   );
 }
@@ -95,14 +103,15 @@ export default function LogIn() {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
+    paddingVertical: 20,
   },
 
   Avatar: {
     backgroundColor: colors.secondary,
     alignSelf: 'center',
     marginBottom: 20,
-    width: 200,
-    minHeight: 200,
+    width: 150,
+    minHeight: 150,
     borderRadius: 100,
   },
 
