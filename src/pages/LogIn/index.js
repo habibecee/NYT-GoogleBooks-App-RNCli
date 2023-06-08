@@ -7,27 +7,23 @@ import {
   ScrollView,
 } from 'react-native';
 import React from 'react';
-import {Formik} from 'formik';
-import {GeneralStyles} from '../../Utils/GeneralStyles';
-import {fonts} from '../../Utils/GeneralStyles';
-import {colors} from '../../Utils/GeneralStyles';
+import {GeneralStyles, colors, fonts} from '../../Utils/GeneralStyles';
+import {useForm, Controller} from 'react-hook-form';
 import Avatar from '../../components/Avatar';
-import * as Yup from 'yup';
-
-const validationScheme = Yup.object().shape({
-  email: Yup.string()
-    .email('Please enter a valid email address!')
-    .required('Please enter your mail address!'),
-
-  password: Yup.string()
-    .min(6, 'Password must be at least 6 characters!')
-    .required('Please enter your password!'),
-});
 
 export default function LogIn() {
-  const handleSubmit = values => {
-    console.log(values);
-  };
+  const {
+    control,
+    handleSubmit,
+    formState: {errors, isValid, dirty},
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = data => console.log(data);
 
   return (
     <View style={[GeneralStyles.container, styles.container]}>
@@ -36,65 +32,78 @@ export default function LogIn() {
           style={styles.Avatar}
           source={require('../../../assets/animations/simpleUserIcon.json')}
         />
-        <Formik
-          initialValues={{email: '', password: ''}}
-          onSubmit={handleSubmit}
-          validationSchema={validationScheme}>
-          {({
-            handleSubmit,
-            handleChange,
-            values,
-            errors,
-            touched,
-            isValid,
-            dirty,
-          }) => (
-            <View style={styles.InputContainer}>
-              <Text style={styles.InputText}>E-mail</Text>
+
+        <View style={styles.InputContainer}>
+          <Text style={styles.InputText}>E-Mail</Text>
+          <Controller
+            control={control}
+            rules={{
+              required: {value: true, message: 'Please enter your email!'},
+              validate: value => {
+                return (
+                  [/[a-z]/, /[@]/, /[.]/].every(pattern =>
+                    pattern.test(value),
+                  ) || 'Please enter a valid email address!'
+                );
+              },
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
               <TextInput
                 style={styles.TextInput}
-                placeholder="E-Mail"
                 placeholderTextColor={colors.secondary}
-                onChangeText={handleChange('email')}
-                value={values.email}
-                keyboardType="email-address"
+                placeholder="E-Mail"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
                 autoCapitalize={'none'}
               />
-              {
-                // If the user touched the input and the input is not valid, show the error message
-                touched.email && errors.email && (
-                  <Text style={styles.ErrorText}> {errors.email} </Text>
-                )
-              }
-              <Text style={styles.InputText}>Password</Text>
+            )}
+            name="Email"
+          />
+          {errors?.email && (
+            <Text style={styles.ErrorText}>{errors?.email?.message}</Text>
+          )}
+
+          <Text style={styles.InputText}>Password</Text>
+          <Controller
+            control={control}
+            rules={{
+              required: {value: true, message: 'Please enter your password!'},
+              maxLength: {value: 20, message: 'Password is too long!'},
+              minLength: {
+                value: 6,
+                message: 'Password is minimum 6 characters!',
+              },
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
               <TextInput
                 style={styles.TextInput}
-                placeholder="Password"
                 placeholderTextColor={colors.secondary}
-                onChangeText={handleChange('password')}
+                placeholder="Password"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
                 secureTextEntry
                 autoCapitalize={'none'}
-                value={values.password}
               />
-              {
-                // If the user touched the input and the input is not valid, show the error message
-                touched.password && errors.password && (
-                  <Text style={styles.ErrorText}>{errors.password}</Text>
-                )
-              }
-              <TouchableOpacity
-                style={
-                  !isValid || !dirty
-                    ? [styles.ButtonContainer, {opacity: 0.7}]
-                    : styles.ButtonContainer
-                }
-                onPress={handleSubmit}
-                disabled={!isValid || !dirty}>
-                <Text style={styles.ButtonText}>Log In</Text>
-              </TouchableOpacity>
-            </View>
+            )}
+            name="password"
+          />
+          {errors?.password && (
+            <Text style={styles.ErrorText}>{errors?.password?.message}</Text>
           )}
-        </Formik>
+
+          <TouchableOpacity
+            style={
+              !isValid
+                ? [styles.ButtonContainer, {opacity: 0.7}]
+                : styles.ButtonContainer
+            }
+            disabled={!isValid}
+            onPress={handleSubmit(onSubmit)}>
+            <Text style={styles.ButtonText}>Log In</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
@@ -102,8 +111,8 @@ export default function LogIn() {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
     paddingVertical: 20,
+    justifyContent: 'center',
   },
 
   Avatar: {

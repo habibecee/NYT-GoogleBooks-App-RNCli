@@ -3,8 +3,6 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  Button,
-  Alert,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
@@ -12,27 +10,13 @@ import React from 'react';
 import {GeneralStyles, colors, fonts} from '../../Utils/GeneralStyles';
 import {useForm, Controller} from 'react-hook-form';
 import Avatar from '../../components/Avatar';
-import * as Yup from 'yup';
-import {yupResolver} from '@hookform/resolvers/yup';
-
-const validationScheme = Yup.object({
-  firstName: Yup.string().required(),
-  lastName: Yup.string().required(),
-  email: Yup.string()
-    .required('Please enter a valid email address!')
-    .email('Please enter a valid email address!'),
-
-  password: Yup.string()
-    .min(6, 'Password must be at least 6 characters!')
-    .required('Please enter your password!'),
-});
 
 export default function SignIn() {
   const {
     control,
 
     handleSubmit,
-    formState: {errors},
+    formState: {errors, isValid, dirty},
   } = useForm({
     defaultValues: {
       firstName: '',
@@ -40,7 +24,6 @@ export default function SignIn() {
       email: '',
       password: '',
     },
-    resolver: yupResolver(validationScheme),
   });
 
   const onSubmit = data => console.log(data);
@@ -59,6 +42,7 @@ export default function SignIn() {
             control={control}
             rules={{
               required: true,
+              message: 'Please enter your first name!',
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
@@ -80,7 +64,8 @@ export default function SignIn() {
           <Controller
             control={control}
             rules={{
-              maxLength: 100,
+              required: true,
+              message: 'Please enter your last name!',
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
@@ -104,10 +89,10 @@ export default function SignIn() {
             control={control}
             rules={{
               required: true,
+              message: 'Please enter a valid email address!',
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
-                inputMode="email"
                 style={styles.TextInput}
                 placeholderTextColor={colors.secondary}
                 placeholder="E-Mail"
@@ -128,10 +113,10 @@ export default function SignIn() {
             control={control}
             rules={{
               required: true,
+              message: 'Please enter your password!',
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
-                inputMode="password"
                 style={styles.TextInput}
                 placeholderTextColor={colors.secondary}
                 placeholder="Password"
@@ -149,7 +134,12 @@ export default function SignIn() {
           )}
 
           <TouchableOpacity
-            style={styles.ButtonContainer}
+            style={
+              !isValid
+                ? [styles.ButtonContainer, {opacity: 0.7}]
+                : styles.ButtonContainer
+            }
+            disabled={!isValid}
             onPress={handleSubmit(onSubmit)}>
             <Text style={styles.ButtonText}>Sign In</Text>
           </TouchableOpacity>
