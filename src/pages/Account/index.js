@@ -9,6 +9,7 @@ import FlashMessage, {
   showMessage,
   hideMessage,
 } from 'react-native-flash-message';
+import Button from '../../components/Button';
 
 export default function Account() {
   const {navigate} = useNavigation();
@@ -30,21 +31,17 @@ export default function Account() {
             Welcome! {user?.uid} {user?.email}{' '}
           </Text>
         </View>
+        <Button
+          onPress={() => navigate('Settings', {id: user?.uid, item: user})}
+          title="Account Settings"
+          styleButton={{backgroundColor: colors.dark, marginBottom: 20}}
+        />
 
-        <TouchableOpacity
-          style={[
-            styles.ButtonContainer,
-            {backgroundColor: colors.dark, marginBottom: 20},
-          ]}
-          onPress={() => navigate('Settings', {id: user?.uid, item: user})}>
-          <Text style={styles.ButtonText}>Account Settings</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.ButtonContainer, {backgroundColor: colors.primary}]}
-          onPress={handleSubmit(logOut)}>
-          <Text style={styles.ButtonText}>Log Out </Text>
-        </TouchableOpacity>
+        <Button
+          onPress={handleSubmit(logOut)}
+          title="Log Out "
+          styleButton={{backgroundColor: colors.primary}}
+        />
       </View>
     );
   }
@@ -64,11 +61,11 @@ export default function Account() {
 
         <Text style={styles.SubText}> Or? </Text>
 
-        <TouchableOpacity
-          style={[styles.ButtonContainer, {backgroundColor: colors.primary}]}
-          onPress={() => navigate('Register')}>
-          <Text style={styles.ButtonText}>Register</Text>
-        </TouchableOpacity>
+        <Button
+          onPress={() => navigate('Register')}
+          title="Register"
+          styleButton={{backgroundColor: colors.primary}}
+        />
       </View>
     );
   }
@@ -123,20 +120,5 @@ const styles = StyleSheet.create({
     color: colors.dark,
     textAlign: 'center',
     marginBottom: 20,
-  },
-
-  Button: {
-    marginBottom: 15,
-  },
-
-  ButtonContainer: {
-    padding: 10,
-    borderRadius: 10,
-  },
-  ButtonText: {
-    fontFamily: fonts.bold,
-    fontSize: 20,
-    color: 'white',
-    textAlign: 'center',
   },
 });

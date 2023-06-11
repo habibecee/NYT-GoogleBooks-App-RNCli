@@ -15,6 +15,7 @@ import FlashMessage, {
   showMessage,
   hideMessage,
 } from 'react-native-flash-message';
+import Button from '../../components/Button';
 
 export default function Settings({route}) {
   const {id, item} = route.params;
@@ -150,16 +151,17 @@ export default function Settings({route}) {
             </Text>
           )}
 
-          <TouchableOpacity
-            style={
+          <Button
+            onPress={handleSubmit(updateProfile)}
+            title="Save Changes"
+            styleButton={
               !isValid
-                ? [styles.ButtonContainer, {opacity: 0.7}]
-                : styles.ButtonContainer
+                ? {backgroundColor: colors.dark, opacity: 0.7}
+                : {backgroundColor: colors.dark}
             }
+            isValid={isValid}
             disabled={!isValid}
-            onPress={handleSubmit(updateProfile)}>
-            <Text style={styles.ButtonText}>Save Changes</Text>
-          </TouchableOpacity>
+          />
         </View>
       </ScrollView>
     </View>
@@ -218,17 +220,5 @@ const styles = StyleSheet.create({
     color: 'red',
     fontFamily: fonts.regular,
     fontSize: 16,
-  },
-
-  ButtonContainer: {
-    backgroundColor: colors.dark,
-    padding: 10,
-    borderRadius: 10,
-  },
-  ButtonText: {
-    fontFamily: fonts.bold,
-    fontSize: 20,
-    color: 'white',
-    textAlign: 'center',
   },
 });
