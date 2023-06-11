@@ -6,30 +6,28 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import {GeneralStyles, colors, fonts} from '../../Utils/GeneralStyles';
-import {useForm, Controller} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import Avatar from '../../components/Avatar';
+import {MainContext} from '../../Context/Context';
+import auth from '@react-native-firebase/auth';
+import FlashMessage, {
+  showMessage,
+  hideMessage,
+} from 'react-native-flash-message';
 
-export default function SignIn() {
+export default function Register() {
   const {
     control,
-
     handleSubmit,
     formState: {errors, isValid, dirty},
-  } = useForm({
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-    },
-  });
-
-  const onSubmit = data => console.log(data);
+    register,
+  } = useContext(MainContext);
 
   return (
     <View style={[GeneralStyles.container, styles.container]}>
+      <FlashMessage position="top" />
       <ScrollView>
         <Avatar
           style={styles.Avatar}
@@ -37,83 +35,46 @@ export default function SignIn() {
         />
 
         <View style={styles.InputContainer}>
-          <Text style={styles.InputText}>First Name</Text>
+          <Text style={styles.InputText}>UserName</Text>
           <Controller
             control={control}
             rules={{
-              required: true,
-              message: 'Please enter your first name!',
+              required: {value: true, message: 'Please enter your email!'},
+              validate: value => {
+                return (
+                  [/[a-z]/, /[@]/, /[.]/].every(pattern =>
+                    pattern.test(value),
+                  ) || 'Please enter a valid email address!'
+                );
+              },
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
                 style={styles.TextInput}
                 placeholderTextColor={colors.secondary}
-                placeholder="First name"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-            name="firstName"
-          />
-          {errors.firstName && (
-            <Text style={styles.ErrorText}>{errors.firstName?.message}</Text>
-          )}
-
-          <Text style={styles.InputText}>Last Name</Text>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-              message: 'Please enter your last name!',
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={styles.TextInput}
-                placeholderTextColor={colors.secondary}
-                placeholder="Last name"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-            name="lastName"
-          />
-
-          {errors.lastName && (
-            <Text style={styles.ErrorText}>{errors.lastName?.message}</Text>
-          )}
-
-          <Text style={styles.InputText}>E-Mail</Text>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-              message: 'Please enter a valid email address!',
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <TextInput
-                style={styles.TextInput}
-                placeholderTextColor={colors.secondary}
-                placeholder="E-Mail"
+                placeholder="Username"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
                 autoCapitalize={'none'}
               />
             )}
-            name="Email"
+            name="Username"
           />
-          {errors.email && (
-            <Text style={styles.ErrorText}>{errors.email?.message}</Text>
+          {errors?.username && (
+            <Text style={styles.ErrorText}>{errors?.username?.message}</Text>
           )}
 
           <Text style={styles.InputText}>Password</Text>
           <Controller
             control={control}
             rules={{
-              required: true,
-              message: 'Please enter your password!',
+              required: {value: true, message: 'Please enter your password!'},
+              maxLength: {value: 20, message: 'Password is too long!'},
+              minLength: {
+                value: 6,
+                message: 'Password is minimum 6 characters!',
+              },
             }}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
@@ -129,8 +90,8 @@ export default function SignIn() {
             )}
             name="password"
           />
-          {errors.password && (
-            <Text style={styles.ErrorText}>{errors.password?.message}</Text>
+          {errors?.password && (
+            <Text style={styles.ErrorText}>{errors?.password?.message}</Text>
           )}
 
           <TouchableOpacity
@@ -140,7 +101,7 @@ export default function SignIn() {
                 : styles.ButtonContainer
             }
             disabled={!isValid}
-            onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(register)}>
             <Text style={styles.ButtonText}>Sign In</Text>
           </TouchableOpacity>
         </View>

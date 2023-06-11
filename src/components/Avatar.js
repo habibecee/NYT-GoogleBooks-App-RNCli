@@ -8,7 +8,7 @@ export default function Avatar({style, source}) {
   return (
     <TouchableOpacity
       style={style}
-      onPress={() => Navigation.navigate('Account')}>
+      onPress={() => Navigation.navigate('Account Page')}>
       <AnimatedLottieView source={source} autoPlay />
     </TouchableOpacity>
   );

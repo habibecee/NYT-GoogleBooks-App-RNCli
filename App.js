@@ -1,9 +1,13 @@
 import React from 'react';
-import Navigation from './src/Navigators/Navigations';
-import auth from '@react-native-firebase/auth';
+import MainNavigation from './src/Navigators/MainNavigations';
+import {MainContextProvider} from './src/Context/Context';
 
 function App() {
-  return <Navigation />;
+  return (
+    <MainContextProvider>
+      <MainNavigation />
+    </MainContextProvider>
+  );
 }
 
 export default App;
