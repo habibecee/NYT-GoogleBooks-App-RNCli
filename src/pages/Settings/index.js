@@ -5,12 +5,13 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {GeneralStyles, colors, fonts} from '../../Utils/GeneralStyles';
 import {MainContext} from '../../Context/Context';
 import Avatar from '../../components/Avatar';
-import {Controller} from 'react-hook-form';
+import {Controller, set} from 'react-hook-form';
 import FlashMessage, {
   showMessage,
   hideMessage,
@@ -18,17 +19,27 @@ import FlashMessage, {
 import Button from '../../components/Button';
 
 export default function Settings({route}) {
-  const {id, item} = route.params;
+  const uid = route.params.uid;
+  console.log('UID BURADAAAA uid', uid);
   const {
-    logOut,
     showInput,
     showAvatarUrl,
-    user,
     updateProfile,
     control,
     handleSubmit,
+    dbCheck,
+    userData,
+    setUserData,
     formState: {errors, isValid, dirty},
   } = useContext(MainContext);
+
+  useEffect(() => {
+    dbCheck(uid).then(userData => {
+      setUserData(userData);
+    });
+
+    console.log('userData', userData);
+  }, []);
 
   return (
     <View style={[GeneralStyles.container, styles.container]}>
@@ -36,10 +47,14 @@ export default function Settings({route}) {
       <ScrollView>
         <View style={styles.changeAvatar}>
           <TouchableOpacity>
-            <Avatar
-              style={styles.Avatar}
-              source={require('../../../assets/animations/read-book.json')}
-            />
+            {userData?.avatar ? (
+              <Image style={styles.Avatar} source={{uri: userData?.avatar}} />
+            ) : (
+              <Avatar
+                style={styles.Avatar}
+                source={require('../../../assets/animations/read-book.json')}
+              />
+            )}
           </TouchableOpacity>
           <TouchableOpacity onPress={showInput}>
             <Text style={styles.changeText}>Change Avatar</Text>
@@ -49,7 +64,7 @@ export default function Settings({route}) {
         <View style={styles.InputContainer}>
           {showAvatarUrl && (
             <>
-              <Text style={styles.InputText}>Avatar Url</Text>
+              <Text style={styles.InputText}>Avatar</Text>
               <Controller
                 control={control}
                 rules={{
@@ -60,22 +75,20 @@ export default function Settings({route}) {
                   <TextInput
                     style={styles.TextInput}
                     placeholderTextColor={colors.secondary}
-                    placeholder="Avatar Url"
+                    placeholder="Avatar"
                     onBlur={onBlur}
                     onChangeText={onChange}
-                    value={value}
+                    defaultValue={userData?.avatar}
                   />
                 )}
-                name="Avatar Url"
+                name="avatar"
               />
-              {item?.errors?.photoURL && (
-                <Text style={styles.ErrorText}>
-                  {item?.errors?.photoURL?.message}
-                </Text>
+              {errors?.avatar && (
+                <Text style={styles.ErrorText}>{errors?.avatar?.message}</Text>
               )}
             </>
           )}
-          <Text style={styles.InputText}>Username</Text>
+          <Text style={styles.InputText}>Display Name</Text>
           <Controller
             control={control}
             rules={{
@@ -86,21 +99,19 @@ export default function Settings({route}) {
               <TextInput
                 style={styles.TextInput}
                 placeholderTextColor={colors.secondary}
-                placeholder="Username"
+                placeholder="Display Name"
                 onBlur={onBlur}
                 onChangeText={onChange}
-                value={value}
+                defaultValue={userData?.username}
               />
             )}
-            name="Username (E-Mail)"
+            name="username"
           />
-          {item?.errors?.displayName && (
-            <Text style={styles.ErrorText}>
-              {item?.errors?.displayName?.message}
-            </Text>
+          {errors?.username && (
+            <Text style={styles.ErrorText}>{errors?.username?.message}</Text>
           )}
 
-          <Text style={styles.InputText}>Mail</Text>
+          <Text style={styles.InputText}>Email</Text>
           <Controller
             control={control}
             rules={{
@@ -111,17 +122,17 @@ export default function Settings({route}) {
               <TextInput
                 style={styles.TextInput}
                 placeholderTextColor={colors.secondary}
-                placeholder="E-Mail"
+                placeholder="Email"
                 onBlur={onBlur}
                 onChangeText={onChange}
-                value={value}
+                defaultValue={userData?.email}
                 autoCapitalize={'none'}
               />
             )}
-            name="Email"
+            name="email"
           />
-          {item?.errors?.email && (
-            <Text style={styles.ErrorText}>{item?.errors?.email?.message}</Text>
+          {errors?.email && (
+            <Text style={styles.ErrorText}>{errors?.email?.message}</Text>
           )}
 
           <Text style={styles.InputText}>Password</Text>
@@ -138,17 +149,15 @@ export default function Settings({route}) {
                 placeholder="Password"
                 onBlur={onBlur}
                 onChangeText={onChange}
-                value={value}
+                defaultValue={userData?.password}
                 secureTextEntry
                 autoCapitalize={'none'}
               />
             )}
             name="password"
           />
-          {item?.errors?.password && (
-            <Text style={styles.ErrorText}>
-              {item?.errors?.password?.message}
-            </Text>
+          {errors?.password && (
+            <Text style={styles.ErrorText}>{errors?.password?.message}</Text>
           )}
 
           <Button

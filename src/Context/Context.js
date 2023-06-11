@@ -1,5 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 import {NativeModules, RefreshControl, useColorScheme} from 'react-native';
 import {useForm} from 'react-hook-form';
 import FlashMessage, {
@@ -13,6 +14,7 @@ const MainContextProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showAvatarUrl, setShowAvatarUrl] = useState(false);
+  const [userData, setUserData] = useState({});
 
   const {
     control,
@@ -21,8 +23,10 @@ const MainContextProvider = ({children}) => {
     getValues,
   } = useForm({
     defaultValues: {
-      username: 'habibe.ce1996@gmail.com',
-      password: 'HabibeCe!.',
+      email: '',
+      password: '',
+      username: '',
+      avatar: '',
     },
   });
 
@@ -36,7 +40,7 @@ const MainContextProvider = ({children}) => {
     console.log('Log In');
 
     auth()
-      .signInWithEmailAndPassword(values.username, values.password)
+      .signInWithEmailAndPassword(values.email, values.password)
       .then(() => {
         showMessage({
           type: 'success',
@@ -101,8 +105,22 @@ const MainContextProvider = ({children}) => {
   const register = () => {
     console.log('Created user!');
     auth()
-      .createUserWithEmailAndPassword(values.username, values.password)
-      .then(() => {
+      .createUserWithEmailAndPassword(values.email, values.password)
+      .then(({user}) => {
+        const userData = {
+          email: values.email,
+          password: values.password,
+          uid: user.uid,
+          username: '',
+          avatar: '',
+        };
+
+        const userIndex = userIndex + 1;
+
+        database().ref(`users/${userIndex}`).set(userData);
+
+        database().ref(`users/info/${user.uid}`).set(userData);
+
         showMessage({
           type: 'success',
           message: 'Created user!',
@@ -171,15 +189,32 @@ const MainContextProvider = ({children}) => {
     }
   }
 
-  const updateProfile = async () => {
-    const update = {
-      username: values.username,
-      password: values.password,
-      displayName: values.displayName,
-      photoURL: values.photoURL,
-    };
+  const dbCheck = async uid => {
+    try {
+      const snapshot = await database().ref(`/users/info/${uid}`).once('value');
+      const userData = snapshot.val();
+      console.log('User data: ', userData);
+      return userData;
+    } catch (error) {
+      console.log('Error: ', error);
+      return null;
+    }
+  };
 
-    await auth().currentUser?.updateProfile(update);
+  const updateProfile = async userData => {
+    const reference = database()
+      .ref('/users/info/' + auth().currentUser?.uid)
+      .set({
+        email: values.email,
+        password: values.password,
+        username: values.username,
+        avatar: values.avatar,
+      });
+
+    setUser(userData);
+
+    console.log('UPDATEEEEEEE User data: ', userData);
+
     setTimeout(() => {
       NativeModules.DevSettings.reload();
     }, 800);
@@ -219,6 +254,9 @@ const MainContextProvider = ({children}) => {
         onAuthStateChanged,
         showInput,
         showAvatarUrl,
+        dbCheck,
+        userData,
+        setUserData,
       }}>
       {children}
     </MainContext.Provider>

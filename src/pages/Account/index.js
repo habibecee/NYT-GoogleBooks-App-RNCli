@@ -13,7 +13,8 @@ import Button from '../../components/Button';
 
 export default function Account() {
   const {navigate} = useNavigation();
-  const {user, logOut, handleSubmit} = useContext(MainContext);
+  const {user, logOut, handleSubmit, dbCheck, userData} =
+    useContext(MainContext);
 
   if (user) {
     return (
@@ -25,14 +26,16 @@ export default function Account() {
         />
 
         <View style={styles.AccountDetail}>
-          <Image source={{uri: user?.photoURL}} style={styles.AccountImage} />
-          <Text style={styles.AccountText}>
-            {' '}
-            Welcome! {user?.uid} {user?.email}{' '}
-          </Text>
+          {userData?.avatar && (
+            <Image
+              source={{uri: userData?.avatar}}
+              style={styles.AccountImage}
+            />
+          )}
+          <Text style={styles.AccountText}>Welcome! {userData?.username}</Text>
         </View>
         <Button
-          onPress={() => navigate('Settings', {id: user?.uid, item: user})}
+          onPress={() => navigate('Settings', {uid: user?.uid})}
           title="Account Settings"
           styleButton={{backgroundColor: colors.dark, marginBottom: 20}}
         />

@@ -36,7 +36,7 @@ export default function Register() {
         />
 
         <View style={styles.InputContainer}>
-          <Text style={styles.InputText}>UserName</Text>
+          <Text style={styles.InputText}>Email</Text>
           <Controller
             control={control}
             rules={{
@@ -53,17 +53,17 @@ export default function Register() {
               <TextInput
                 style={styles.TextInput}
                 placeholderTextColor={colors.secondary}
-                placeholder="Username"
+                placeholder="Email"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
                 autoCapitalize={'none'}
               />
             )}
-            name="Username"
+            name="email"
           />
-          {errors?.username && (
-            <Text style={styles.ErrorText}>{errors?.username?.message}</Text>
+          {errors?.email && (
+            <Text style={styles.ErrorText}>{errors?.email?.message}</Text>
           )}
 
           <Text style={styles.InputText}>Password</Text>
