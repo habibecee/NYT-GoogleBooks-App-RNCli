@@ -1,37 +1,77 @@
-import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import React, {useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {GeneralStyles, colors, fonts} from '../../Utils/GeneralStyles';
 import Avatar from '../../components/Avatar';
+import LogIn from '../../components/LogIn';
+import {MainContext} from '../../Context/Context';
+import FlashMessage, {
+  showMessage,
+  hideMessage,
+} from 'react-native-flash-message';
+import Button from '../../components/Button';
 
 export default function Account() {
   const {navigate} = useNavigation();
-  return (
-    <View style={[GeneralStyles.container, styles.container]}>
-      <Avatar
-        style={styles.Avatar}
-        source={require('../../../assets/animations/searchUsers.json')}
-      />
-      <View style={styles.Button}>
-        <Text style={styles.SubText}>Do you have an account? </Text>
+  const {user, logOut, handleSubmit, dbCheck, userData} =
+    useContext(MainContext);
 
-        <TouchableOpacity
-          style={[styles.ButtonContainer, {backgroundColor: colors.dark}]}
-          onPress={() => navigate('LogIn')}>
-          <Text style={styles.ButtonText}>Log In</Text>
-        </TouchableOpacity>
+  if (user) {
+    return (
+      <View style={[GeneralStyles.container, styles.container]}>
+        <FlashMessage position="top" />
+        <Avatar
+          style={styles.AccountAvatar}
+          source={require('../../../assets/animations/girl-book.json')}
+        />
+
+        <View style={styles.AccountDetail}>
+          {userData?.avatar && (
+            <Image
+              source={{uri: userData?.avatar}}
+              style={styles.AccountImage}
+            />
+          )}
+          <Text style={styles.AccountText}>Welcome! {userData?.username}</Text>
+        </View>
+        <Button
+          onPress={() => navigate('Settings', {uid: user?.uid})}
+          title="Account Settings"
+          styleButton={{backgroundColor: colors.dark, marginBottom: 20}}
+        />
+
+        <Button
+          onPress={handleSubmit(logOut)}
+          title="Log Out "
+          styleButton={{backgroundColor: colors.primary}}
+        />
       </View>
-      <View style={styles.Button}>
+    );
+  }
+
+  if (!user) {
+    return (
+      <View style={[GeneralStyles.container, styles.container]}>
+        <FlashMessage position="top" />
+        <Avatar
+          style={styles.Avatar}
+          source={require('../../../assets/animations/searchUsers.json')}
+        />
+        <Text style={styles.SubText}>Do you have an account? </Text>
+        <Text style={styles.SubText}>Log In now!</Text>
+
+        <LogIn />
+
         <Text style={styles.SubText}> Or? </Text>
 
-        <TouchableOpacity
-          style={[styles.ButtonContainer, {backgroundColor: colors.primary}]}
-          onPress={() => navigate('SignIn')}>
-          <Text style={styles.ButtonText}>Sign In</Text>
-        </TouchableOpacity>
+        <Button
+          onPress={() => navigate('Register')}
+          title="Register"
+          styleButton={{backgroundColor: colors.primary}}
+        />
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -49,26 +89,39 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
 
+  AccountAvatar: {
+    backgroundColor: colors.secondary,
+    alignSelf: 'center',
+    marginBottom: 20,
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+  },
+
+  AccountDetail: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  AccountImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+    borderWidth: 1,
+  },
+  AccountText: {
+    fontFamily: fonts.bold,
+    fontSize: 16,
+    color: colors.dark,
+    textAlign: 'center',
+  },
+
   SubText: {
     fontFamily: fonts.bold,
     fontSize: 18,
     color: colors.dark,
     textAlign: 'center',
     marginBottom: 20,
-  },
-
-  Button: {
-    marginBottom: 15,
-  },
-
-  ButtonContainer: {
-    padding: 10,
-    borderRadius: 10,
-  },
-  ButtonText: {
-    fontFamily: fonts.bold,
-    fontSize: 20,
-    color: 'white',
-    textAlign: 'center',
   },
 });
