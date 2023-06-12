@@ -27,6 +27,10 @@ const MainContextProvider = ({children}) => {
       password: '',
       username: '',
       avatar: '',
+      // habibe.ce1996@gmail.com
+      // HabibeCe!.
+      // https://avatars.githubusercontent.com/u/108949876?v=4
+      // HABİBE CE
     },
   });
 
@@ -220,12 +224,12 @@ const MainContextProvider = ({children}) => {
     }, 800);
   };
 
-  async function updateEmailVerified() {
-    user
-      ?.sendEmailVerification()
-      .then(console.log('Email sent!'))
-      .catch(error => console.log('Error', error));
-  }
+  // async function updateEmailVerified() {
+  //   user
+  //     ?.sendEmailVerification()
+  //     .then(console.log('Email sent!'))
+  //     .catch(error => console.log('Error', error));
+  // }
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);

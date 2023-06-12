@@ -9,6 +9,8 @@ import HomeNavigator from './HomeNavigator';
 import Loading from '../components/Loading';
 import {useContext, useEffect} from 'react';
 import {MainContext} from '../Context/Context';
+import MapNavigator from './MapNavigator';
+import MapIcon from '../components/MapIcon';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,6 +48,15 @@ function MainNavigation() {
               headerShown: false,
 
               tabBarIcon: () => <HomeIcon />,
+            }}
+          />
+          <Tab.Screen
+            name="Maps"
+            component={MapNavigator}
+            options={{
+              headerShown: false,
+
+              tabBarIcon: () => <MapIcon />,
             }}
           />
           <Tab.Screen

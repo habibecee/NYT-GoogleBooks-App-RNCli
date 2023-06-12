@@ -1,4 +1,12 @@
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native';
 import React, {useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {GeneralStyles, colors, fonts} from '../../Utils/GeneralStyles';
@@ -19,32 +27,38 @@ export default function Account() {
   if (user) {
     return (
       <View style={[GeneralStyles.container, styles.container]}>
-        <FlashMessage position="top" />
-        <Avatar
-          style={styles.AccountAvatar}
-          source={require('../../../assets/animations/girl-book.json')}
-        />
-
-        <View style={styles.AccountDetail}>
-          {userData?.avatar && (
-            <Image
-              source={{uri: userData?.avatar}}
-              style={styles.AccountImage}
+        <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+          <ScrollView style={styles.ScrollView}>
+            <FlashMessage position="top" />
+            <Avatar
+              style={styles.AccountAvatar}
+              source={require('../../../assets/animations/girl-book.json')}
             />
-          )}
-          <Text style={styles.AccountText}>Welcome! {userData?.username}</Text>
-        </View>
-        <Button
-          onPress={() => navigate('Settings', {uid: user?.uid})}
-          title="Account Settings"
-          styleButton={{backgroundColor: colors.dark, marginBottom: 20}}
-        />
 
-        <Button
-          onPress={handleSubmit(logOut)}
-          title="Log Out "
-          styleButton={{backgroundColor: colors.primary}}
-        />
+            <View style={styles.AccountDetail}>
+              {userData?.avatar && (
+                <Image
+                  source={{uri: userData?.avatar}}
+                  style={styles.AccountImage}
+                />
+              )}
+              <Text style={styles.AccountText}>
+                Welcome! {userData?.username}
+              </Text>
+            </View>
+            <Button
+              onPress={() => navigate('Settings', {uid: user?.uid})}
+              title="Account Settings"
+              styleButton={{backgroundColor: colors.dark, marginBottom: 20}}
+            />
+
+            <Button
+              onPress={handleSubmit(logOut)}
+              title="Log Out "
+              styleButton={{backgroundColor: colors.primary}}
+            />
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     );
   }
@@ -52,23 +66,27 @@ export default function Account() {
   if (!user) {
     return (
       <View style={[GeneralStyles.container, styles.container]}>
-        <FlashMessage position="top" />
-        <Avatar
-          style={styles.Avatar}
-          source={require('../../../assets/animations/searchUsers.json')}
-        />
-        <Text style={styles.SubText}>Do you have an account? </Text>
-        <Text style={styles.SubText}>Log In now!</Text>
+        <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+          <ScrollView style={styles.ScrollView}>
+            <FlashMessage position="top" />
+            <Avatar
+              style={styles.Avatar}
+              source={require('../../../assets/animations/searchUsers.json')}
+            />
+            <Text style={styles.SubText}>Do you have an account? </Text>
+            <Text style={styles.SubText}>Log In now!</Text>
 
-        <LogIn />
+            <LogIn />
 
-        <Text style={styles.SubText}> Or? </Text>
+            <Text style={styles.SubText}> Or? </Text>
 
-        <Button
-          onPress={() => navigate('Register')}
-          title="Register"
-          styleButton={{backgroundColor: colors.primary}}
-        />
+            <Button
+              onPress={() => navigate('Register')}
+              title="Register"
+              styleButton={{backgroundColor: colors.primary}}
+            />
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     );
   }
@@ -76,8 +94,13 @@ export default function Account() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
     justifyContent: 'center',
+    padding: 20,
+  },
+
+  ScrollView: {
+    flex: 1,
+    width: '100%',
   },
 
   Avatar: {

@@ -1,6 +1,7 @@
 # OSX
 #
 .DS_Store
+.env
 
 # Xcode
 #
@@ -65,3 +66,6 @@ yarn-error.log
 # Firebase dosyaları
 android/app/google-services.json
 ios/GoogleService-Info.plist
+
+# react-native-config codegen
+ios/Config.xcconfig
