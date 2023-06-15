@@ -36,7 +36,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>APPLICATION NEEDS TO USE USER LOCATION</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Kalam-Bold.ttf</string>

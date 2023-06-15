@@ -1,50 +1,61 @@
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native';
 import React, {useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {GeneralStyles, colors, fonts} from '../../Utils/GeneralStyles';
 import Avatar from '../../components/Avatar';
 import LogIn from '../../components/LogIn';
 import {MainContext} from '../../Context/Context';
-import FlashMessage, {
-  showMessage,
-  hideMessage,
-} from 'react-native-flash-message';
+import FlashMessage from 'react-native-flash-message';
 import Button from '../../components/Button';
 
 export default function Account() {
   const {navigate} = useNavigation();
-  const {user, logOut, handleSubmit, dbCheck, userData} =
-    useContext(MainContext);
+  const {user, logOut, handleSubmit, userData} = useContext(MainContext);
 
   if (user) {
     return (
       <View style={[GeneralStyles.container, styles.container]}>
-        <FlashMessage position="top" />
-        <Avatar
-          style={styles.AccountAvatar}
-          source={require('../../../assets/animations/girl-book.json')}
-        />
+        <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+          <Text style={styles.AccountText}>Welcome!</Text>
+          <ScrollView style={styles.ScrollView}>
+            <FlashMessage position="top" />
 
-        <View style={styles.AccountDetail}>
-          {userData?.avatar && (
-            <Image
-              source={{uri: userData?.avatar}}
-              style={styles.AccountImage}
+            {userData?.avatar ? (
+              <View style={styles.AccountDetail}>
+                <Image
+                  source={{uri: userData?.avatar}}
+                  style={styles.AccountAvatar}
+                />
+
+                <Text style={styles.AccountText}>{userData?.username}</Text>
+              </View>
+            ) : (
+              <Avatar
+                style={styles.AccountAvatar}
+                source={require('../../../assets/animations/girl-book.json')}
+              />
+            )}
+
+            <Button
+              onPress={() => navigate('Settings', {uid: user?.uid})}
+              title="Account Settings"
+              styleButton={{backgroundColor: colors.dark, marginBottom: 20}}
             />
-          )}
-          <Text style={styles.AccountText}>Welcome! {userData?.username}</Text>
-        </View>
-        <Button
-          onPress={() => navigate('Settings', {uid: user?.uid})}
-          title="Account Settings"
-          styleButton={{backgroundColor: colors.dark, marginBottom: 20}}
-        />
 
-        <Button
-          onPress={handleSubmit(logOut)}
-          title="Log Out "
-          styleButton={{backgroundColor: colors.primary}}
-        />
+            <Button
+              onPress={handleSubmit(logOut)}
+              title="Log Out "
+              styleButton={{backgroundColor: colors.primary}}
+            />
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     );
   }
@@ -52,23 +63,27 @@ export default function Account() {
   if (!user) {
     return (
       <View style={[GeneralStyles.container, styles.container]}>
-        <FlashMessage position="top" />
-        <Avatar
-          style={styles.Avatar}
-          source={require('../../../assets/animations/searchUsers.json')}
-        />
-        <Text style={styles.SubText}>Do you have an account? </Text>
-        <Text style={styles.SubText}>Log In now!</Text>
+        <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+          <ScrollView style={styles.ScrollView}>
+            <FlashMessage position="top" />
+            <Avatar
+              style={styles.Avatar}
+              source={require('../../../assets/animations/searchUsers.json')}
+            />
+            <Text style={styles.SubText}>Do you have an account? </Text>
+            <Text style={styles.SubText}>Log In now!</Text>
 
-        <LogIn />
+            <LogIn />
 
-        <Text style={styles.SubText}> Or? </Text>
+            <Text style={styles.SubText}> Or? </Text>
 
-        <Button
-          onPress={() => navigate('Register')}
-          title="Register"
-          styleButton={{backgroundColor: colors.primary}}
-        />
+            <Button
+              onPress={() => navigate('Register')}
+              title="Register"
+              styleButton={{backgroundColor: colors.primary}}
+            />
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     );
   }
@@ -76,8 +91,13 @@ export default function Account() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
     justifyContent: 'center',
+    padding: 20,
+  },
+
+  ScrollView: {
+    flex: 1,
+    width: '100%',
   },
 
   Avatar: {
@@ -99,21 +119,13 @@ const styles = StyleSheet.create({
   },
 
   AccountDetail: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
     marginBottom: 20,
   },
-  AccountImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 100,
-    borderWidth: 1,
-  },
+
   AccountText: {
     fontFamily: fonts.bold,
-    fontSize: 16,
-    color: colors.dark,
+    fontSize: 20,
+    color: colors.secondary,
     textAlign: 'center',
   },
 

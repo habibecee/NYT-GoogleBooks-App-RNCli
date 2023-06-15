@@ -1,7 +1,7 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import {NativeModules, RefreshControl, useColorScheme} from 'react-native';
+import {NativeModules} from 'react-native';
 import {useForm} from 'react-hook-form';
 import FlashMessage, {
   showMessage,
@@ -220,12 +220,12 @@ const MainContextProvider = ({children}) => {
     }, 800);
   };
 
-  async function updateEmailVerified() {
-    user
-      ?.sendEmailVerification()
-      .then(console.log('Email sent!'))
-      .catch(error => console.log('Error', error));
-  }
+  // async function updateEmailVerified() {
+  //   user
+  //     ?.sendEmailVerification()
+  //     .then(console.log('Email sent!'))
+  //     .catch(error => console.log('Error', error));
+  // }
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -235,6 +235,13 @@ const MainContextProvider = ({children}) => {
   useEffect(() => {
     console.log('User', user);
   }, [user]);
+
+  useEffect(() => {
+    dbCheck(user?.data?.uid).then(userData => {
+      setUserData(userData);
+    });
+    console.log('userData', userData);
+  }, []);
 
   return (
     <MainContext.Provider
