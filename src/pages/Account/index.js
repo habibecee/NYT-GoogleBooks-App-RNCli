@@ -2,7 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   Image,
   ScrollView,
   KeyboardAvoidingView,
@@ -13,39 +12,37 @@ import {GeneralStyles, colors, fonts} from '../../Utils/GeneralStyles';
 import Avatar from '../../components/Avatar';
 import LogIn from '../../components/LogIn';
 import {MainContext} from '../../Context/Context';
-import FlashMessage, {
-  showMessage,
-  hideMessage,
-} from 'react-native-flash-message';
+import FlashMessage from 'react-native-flash-message';
 import Button from '../../components/Button';
 
 export default function Account() {
   const {navigate} = useNavigation();
-  const {user, logOut, handleSubmit, dbCheck, userData} =
-    useContext(MainContext);
+  const {user, logOut, handleSubmit, userData} = useContext(MainContext);
 
   if (user) {
     return (
       <View style={[GeneralStyles.container, styles.container]}>
         <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+          <Text style={styles.AccountText}>Welcome!</Text>
           <ScrollView style={styles.ScrollView}>
             <FlashMessage position="top" />
-            <Avatar
-              style={styles.AccountAvatar}
-              source={require('../../../assets/animations/girl-book.json')}
-            />
 
-            <View style={styles.AccountDetail}>
-              {userData?.avatar && (
+            {userData?.avatar ? (
+              <View style={styles.AccountDetail}>
                 <Image
                   source={{uri: userData?.avatar}}
-                  style={styles.AccountImage}
+                  style={styles.AccountAvatar}
                 />
-              )}
-              <Text style={styles.AccountText}>
-                Welcome! {userData?.username}
-              </Text>
-            </View>
+
+                <Text style={styles.AccountText}>{userData?.username}</Text>
+              </View>
+            ) : (
+              <Avatar
+                style={styles.AccountAvatar}
+                source={require('../../../assets/animations/girl-book.json')}
+              />
+            )}
+
             <Button
               onPress={() => navigate('Settings', {uid: user?.uid})}
               title="Account Settings"
@@ -122,21 +119,13 @@ const styles = StyleSheet.create({
   },
 
   AccountDetail: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
     marginBottom: 20,
   },
-  AccountImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 100,
-    borderWidth: 1,
-  },
+
   AccountText: {
     fontFamily: fonts.bold,
-    fontSize: 16,
-    color: colors.dark,
+    fontSize: 20,
+    color: colors.secondary,
     textAlign: 'center',
   },
 

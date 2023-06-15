@@ -1,7 +1,7 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import {NativeModules, RefreshControl, useColorScheme} from 'react-native';
+import {NativeModules} from 'react-native';
 import {useForm} from 'react-hook-form';
 import FlashMessage, {
   showMessage,
