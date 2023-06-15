@@ -27,10 +27,6 @@ const MainContextProvider = ({children}) => {
       password: '',
       username: '',
       avatar: '',
-      // habibe.ce1996@gmail.com
-      // HabibeCe!.
-      // https://avatars.githubusercontent.com/u/108949876?v=4
-      // HABİBE CE
     },
   });
 
@@ -239,6 +235,13 @@ const MainContextProvider = ({children}) => {
   useEffect(() => {
     console.log('User', user);
   }, [user]);
+
+  useEffect(() => {
+    dbCheck(user?.data?.uid).then(userData => {
+      setUserData(userData);
+    });
+    console.log('userData', userData);
+  }, []);
 
   return (
     <MainContext.Provider

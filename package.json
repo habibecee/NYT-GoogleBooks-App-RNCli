@@ -26,6 +26,7 @@
     "react-hook-form": "^7.44.2",
     "react-native": "^0.71.10",
     "react-native-config": "^1.5.1",
+    "react-native-dotenv": "^3.4.8",
     "react-native-flash-message": "^0.4.1",
     "react-native-google-maps": "^1.0.0",
     "react-native-maps": "^1.7.1",
