@@ -1,6 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {colors, fonts} from '../Utils/GeneralStyles';
 import Maps from '../pages/Maps';
+import HeaderAvatar from '../components/HeaderAvatar';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +24,14 @@ export default function MapNavigator() {
           size: 20,
         },
       }}>
-      <Stack.Screen name="Maps Page" component={Maps} />
+      <Stack.Screen
+        name="Maps Page"
+        component={Maps}
+        options={{
+          title: '',
+          headerRight: () => <HeaderAvatar />,
+        }}
+      />
     </Stack.Navigator>
   );
 }

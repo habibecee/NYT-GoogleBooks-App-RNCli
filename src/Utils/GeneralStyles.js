@@ -18,7 +18,7 @@ export const colors = {
   textLight: '#635985',
   textPrimary: '#393053',
   textSecondary: '#443C68',
-  textPrice: '#FF5403',
+  textWarn: '#790252',
 
   red: '#F90716',
   // FF6969

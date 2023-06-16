@@ -6,14 +6,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useContext} from 'react';
-import {colors, fonts} from '../Utils/GeneralStyles';
+import {colors, fonts} from '../../../Utils/GeneralStyles';
 import {Controller} from 'react-hook-form';
-import {MainContext} from '../Context/Context';
+import {MainContext} from '../../../Context/Context';
 import FlashMessage, {
   showMessage,
   hideMessage,
 } from 'react-native-flash-message';
-import Button from './Button';
+import Button from '../../../components/Button';
 
 export default function LogIn() {
   const {

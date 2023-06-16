@@ -1,10 +1,16 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {colors, fonts} from '../Utils/GeneralStyles';
-import Home from '../pages/Home';
+import Home from '../pages/Home/Home';
+import HeaderAvatar from '../components/HeaderAvatar';
+import WeeklyItems from '../pages/Home/WeeklyItems/WeeklyItems';
+import WeeklyItemsDetails from '../pages/Home/WeeklyItems/WeeklyItemsDetails';
+import Archive from '../pages/Home/Archive/Archive';
+import Books from '../pages/Home/Books/Books';
+import Article from '../pages/Home/Article/Article';
 
 const Stack = createNativeStackNavigator();
 
-export default function HomeNavigator() {
+export default function HomeNavigator({route}) {
   return (
     <Stack.Navigator
       initialRouteName="Home Page"
@@ -23,7 +29,56 @@ export default function HomeNavigator() {
           size: 20,
         },
       }}>
-      <Stack.Screen name="Home Page" component={Home} />
+      <Stack.Screen
+        name="Home Page"
+        component={Home}
+        options={{
+          title: '',
+          headerRight: () => <HeaderAvatar />,
+        }}
+      />
+      <Stack.Screen
+        name="WeeklyItems"
+        component={WeeklyItems}
+        options={{
+          title: 'This Week',
+          headerRight: () => <HeaderAvatar />,
+        }}
+      />
+      <Stack.Screen
+        name="WeeklyItemsDetails"
+        component={WeeklyItemsDetails}
+        options={({route}) => {
+          return {
+            title: route?.params?.item?.title,
+            headerRight: () => <HeaderAvatar />,
+          };
+        }}
+      />
+      <Stack.Screen
+        name="Archive"
+        component={Archive}
+        options={{
+          title: 'Archive',
+          headerRight: () => <HeaderAvatar />,
+        }}
+      />
+      <Stack.Screen
+        name="Books"
+        component={Books}
+        options={{
+          title: 'Books',
+          headerRight: () => <HeaderAvatar />,
+        }}
+      />
+      <Stack.Screen
+        name="Article"
+        component={Article}
+        options={{
+          title: 'Article',
+          headerRight: () => <HeaderAvatar />,
+        }}
+      />
     </Stack.Navigator>
   );
 }

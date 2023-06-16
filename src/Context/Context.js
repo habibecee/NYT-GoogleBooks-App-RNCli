@@ -15,6 +15,11 @@ const MainContextProvider = ({children}) => {
   const [loading, setLoading] = useState(true);
   const [showAvatarUrl, setShowAvatarUrl] = useState(false);
   const [userData, setUserData] = useState({});
+  const [showMenu, setShowMenu] = useState(false);
+
+  const ShowItems = () => {
+    setShowMenu(!showMenu);
+  };
 
   const {
     control,
@@ -264,6 +269,9 @@ const MainContextProvider = ({children}) => {
         dbCheck,
         userData,
         setUserData,
+        ShowItems,
+        showMenu,
+        setShowMenu,
       }}>
       {children}
     </MainContext.Provider>
