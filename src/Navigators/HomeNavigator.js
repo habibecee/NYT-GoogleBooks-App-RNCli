@@ -1,14 +1,16 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {colors, fonts} from '../Utils/GeneralStyles';
-import Home from '../pages/Home';
-import WeeklyItemsDetails from '../pages/WeeklyItemsDetails';
-import {Image} from 'react-native';
+import Home from '../pages/Home/Home';
 import HeaderAvatar from '../components/HeaderAvatar';
-import WeeklyItems from '../pages/WeeklyItems';
+import WeeklyItems from '../pages/Home/WeeklyItems/WeeklyItems';
+import WeeklyItemsDetails from '../pages/Home/WeeklyItems/WeeklyItemsDetails';
+import Archive from '../pages/Home/Archive/Archive';
+import Books from '../pages/Home/Books/Books';
+import Article from '../pages/Home/Article/Article';
 
 const Stack = createNativeStackNavigator();
 
-export default function HomeNavigator() {
+export default function HomeNavigator({route}) {
   return (
     <Stack.Navigator
       initialRouteName="Home Page"
@@ -44,10 +46,36 @@ export default function HomeNavigator() {
         }}
       />
       <Stack.Screen
-        name="WeeklyItem"
+        name="WeeklyItemsDetails"
         component={WeeklyItemsDetails}
+        options={({route}) => {
+          return {
+            title: route?.params?.item?.title,
+            headerRight: () => <HeaderAvatar />,
+          };
+        }}
+      />
+      <Stack.Screen
+        name="Archive"
+        component={Archive}
         options={{
-          title: 'This Week',
+          title: 'Archive',
+          headerRight: () => <HeaderAvatar />,
+        }}
+      />
+      <Stack.Screen
+        name="Books"
+        component={Books}
+        options={{
+          title: 'Books',
+          headerRight: () => <HeaderAvatar />,
+        }}
+      />
+      <Stack.Screen
+        name="Article"
+        component={Article}
+        options={{
+          title: 'Article',
           headerRight: () => <HeaderAvatar />,
         }}
       />

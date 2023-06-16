@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useContext} from 'react';
-import {GeneralStyles, colors, fonts} from '../../Utils/GeneralStyles';
-import {MainContext} from '../../Context/Context';
-import useFetch from '../../Context/useFetch';
+import {GeneralStyles, colors, fonts} from '../../../Utils/GeneralStyles';
+import {MainContext} from '../../../Context/Context';
+import useFetch from '../../../Context/useFetch';
 import {NYT_API_KEY} from '@env';
 import {useNavigation} from '@react-navigation/native';
-import AlarmIcon from '../../components/Alarm';
-import Loading from '../../components/Loading';
+import AlarmIcon from '../../../components/Alarm';
+import Loading from '../../../components/Loading';
 
 export default function WeeklyItems() {
   const {navigate} = useNavigation();
@@ -29,7 +29,7 @@ export default function WeeklyItems() {
     <TouchableOpacity
       style={styles.ItemContainer}
       key={item?.rank}
-      onPress={() => navigate('WeeklyItem', {item: item})}>
+      onPress={() => navigate('WeeklyItemsDetails', {item: item})}>
       <View style={styles.ItemImageContainer}>
         <Image style={styles.ItemImage} source={{uri: item?.book_image}} />
       </View>

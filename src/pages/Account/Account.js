@@ -10,7 +10,7 @@ import React, {useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {GeneralStyles, colors, fonts} from '../../Utils/GeneralStyles';
 import Avatar from '../../components/Avatar';
-import LogIn from '../../components/LogIn';
+import LogIn from './Components/LogIn';
 import {MainContext} from '../../Context/Context';
 import FlashMessage from 'react-native-flash-message';
 import Button from '../../components/Button';

@@ -11,6 +11,7 @@ import {GeneralStyles, colors, fonts} from '../../Utils/GeneralStyles';
 import {MainContext} from '../../Context/Context';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Feed from './Components/Feed';
 
 export default function Home() {
   const {navigate} = useNavigation();
@@ -19,7 +20,7 @@ export default function Home() {
 
   return (
     <View style={[GeneralStyles.container, styles.container]}>
-      <Text style={styles.SubText}>Welcome to the New York Times</Text>
+      <Text style={styles.SubText}>Welcome!</Text>
       <View style={styles.SectionContainer}>
         <TouchableOpacity
           style={styles.Sections}
@@ -44,7 +45,7 @@ export default function Home() {
             <>
               <TouchableOpacity
                 style={styles.Sections}
-                onPress={() => navigate('WeeklyItems')}>
+                onPress={() => navigate('Archive')}>
                 <Image
                   style={styles.SectionImage}
                   source={require('../../../assets/images/Archive.jpeg')}
@@ -53,7 +54,7 @@ export default function Home() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.Sections}
-                onPress={() => navigate('WeeklyItems')}>
+                onPress={() => navigate('Books')}>
                 <Image
                   style={styles.SectionImage}
                   source={require('../../../assets/images/Books.jpeg')}
@@ -62,7 +63,7 @@ export default function Home() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.Sections}
-                onPress={() => navigate('WeeklyItems')}>
+                onPress={() => navigate('Article')}>
                 <Image
                   style={styles.SectionImage}
                   source={require('../../../assets/images/PopularArticle.jpeg')}
@@ -73,6 +74,8 @@ export default function Home() {
           )}
         </View>
       </View>
+
+      <Feed />
     </View>
   );
 }
@@ -89,6 +92,7 @@ const styles = StyleSheet.create({
     color: colors.primary,
     textAlign: 'left',
     marginLeft: 20,
+    marginTop: 20,
   },
 
   SectionContainer: {
