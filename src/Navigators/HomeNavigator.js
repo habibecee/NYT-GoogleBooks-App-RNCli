@@ -2,6 +2,9 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {colors, fonts} from '../Utils/GeneralStyles';
 import Home from '../pages/Home';
 import WeeklyItemsDetails from '../pages/WeeklyItemsDetails';
+import {Image} from 'react-native';
+import HeaderAvatar from '../components/HeaderAvatar';
+import WeeklyItems from '../pages/WeeklyItems';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,11 +28,29 @@ export default function HomeNavigator() {
         },
       }}>
       <Stack.Screen
-        options={{headerShown: false}}
         name="Home Page"
         component={Home}
+        options={{
+          title: '',
+          headerRight: () => <HeaderAvatar />,
+        }}
       />
-      <Stack.Screen name="WeeklyItem" component={WeeklyItemsDetails} />
+      <Stack.Screen
+        name="WeeklyItems"
+        component={WeeklyItems}
+        options={{
+          title: 'This Week',
+          headerRight: () => <HeaderAvatar />,
+        }}
+      />
+      <Stack.Screen
+        name="WeeklyItem"
+        component={WeeklyItemsDetails}
+        options={{
+          title: 'This Week',
+          headerRight: () => <HeaderAvatar />,
+        }}
+      />
     </Stack.Navigator>
   );
 }
