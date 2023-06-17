@@ -12,6 +12,8 @@ import {MainContext} from '../../Context/Context';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Feed from './Components/Feed';
+import FeedCategoryItems from './Components/FeedItems';
+import Arrow from '../../components/Arrow';
 
 export default function Home() {
   const {navigate} = useNavigation();
@@ -20,7 +22,6 @@ export default function Home() {
 
   return (
     <View style={[GeneralStyles.container, styles.container]}>
-      <Text style={styles.SubText}>Welcome!</Text>
       <View style={styles.SectionContainer}>
         <TouchableOpacity
           style={styles.Sections}
@@ -33,13 +34,11 @@ export default function Home() {
         </TouchableOpacity>
 
         <View style={styles.MenuContainer}>
-          <TouchableOpacity style={styles.Sections} onPress={ShowItems}>
-            <Icon
-              name="chevron-forward-sharp"
-              size={30}
-              color={colors.primary}
-            />
-          </TouchableOpacity>
+          <Arrow
+            name="right"
+            onPress={ShowItems}
+            source={require('../../../assets/animations/arrow.json')}
+          />
 
           {showMenu && (
             <>
@@ -75,7 +74,15 @@ export default function Home() {
         </View>
       </View>
 
-      <Feed />
+      <View style={styles.SubContainer}>
+        <Text style={styles.SubText}>Today's News</Text>
+        <Arrow
+          name="bottom"
+          source={require('../../../assets/animations/gray-down-arrow.json')}
+        />
+      </View>
+
+      <FeedCategoryItems />
     </View>
   );
 }
@@ -86,6 +93,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 20,
   },
+
+  SubContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
   SubText: {
     fontFamily: fonts.bold,
     fontSize: 20,
@@ -98,6 +111,7 @@ const styles = StyleSheet.create({
   SectionContainer: {
     flexDirection: 'row',
     width: Dimensions.get('window').width - 40,
+    marginTop: 20,
   },
 
   MenuContainer: {

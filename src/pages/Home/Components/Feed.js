@@ -21,10 +21,16 @@ export default function Feed() {
     `https://api.nytimes.com/svc/news/v3/content/section-list.json?api-key=${NYT_API_KEY}`,
   );
 
-  console.log('DATA BOOKS', data);
+  //   console.log('DATA BOOKS', data);
 
   const renderItem = ({item, index}) => (
-    <TouchableOpacity style={styles.ItemContainer} key={index}>
+    <TouchableOpacity
+      style={styles.ItemContainer}
+      key={index}
+      //   onPress={() =>
+      //     navigate('FeedCategoryItems', {section: item?.display_name})
+      //   }
+    >
       <Text style={styles.ItemTitle}>{item?.display_name}</Text>
       <Icon name="chevron-forward-sharp" size={30} color={colors.primary} />
     </TouchableOpacity>
