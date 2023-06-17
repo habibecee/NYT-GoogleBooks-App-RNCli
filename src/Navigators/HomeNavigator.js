@@ -41,7 +41,7 @@ export default function HomeNavigator({route}) {
         name="WeeklyItems"
         component={WeeklyItems}
         options={{
-          title: 'This Week',
+          title: 'Best Sellers',
           headerRight: () => <HeaderAvatar />,
         }}
       />

@@ -23,8 +23,6 @@ export default function WeeklyItems() {
     `https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=${NYT_API_KEY}`,
   );
 
-  console.log('DATA BOOKS', data);
-
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.ItemContainer}
@@ -62,7 +60,7 @@ export default function WeeklyItems() {
           </View>
           <Text style={styles.SubText}>
             {' '}
-            Date: {data?.results?.bestsellers_date} /{' '}
+            Week: {data?.results?.bestsellers_date} /{' '}
             {data?.results?.published_date}{' '}
           </Text>
           <FlatList
@@ -93,10 +91,11 @@ const styles = StyleSheet.create({
   },
   SubText: {
     fontFamily: fonts.bold,
-    fontSize: 20,
-    color: colors.primary,
-    textAlign: 'left',
-    marginLeft: 20,
+    fontSize: 14,
+    color: colors.textWarn,
+    textAlign: 'right',
+    marginRight: 20,
+    marginBottom: 10,
   },
 
   FootText: {

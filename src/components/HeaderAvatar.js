@@ -15,7 +15,6 @@ export default function HeaderAvatar() {
         style={styles.container}
         onPress={() => navigate('Account Page')}>
         <Image style={styles.Avatar} source={{uri: userData?.avatar}} />
-
         <Text style={styles.SubText}>{userData?.username}</Text>
       </TouchableOpacity>
     );
@@ -38,21 +37,18 @@ export default function HeaderAvatar() {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 10,
   },
 
   Avatar: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
     borderRadius: 50,
   },
 
   SubText: {
     fontFamily: fonts.bold,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.primary,
   },
 });
