@@ -11,13 +11,14 @@ import {
 import React from 'react';
 import {colors, fonts} from '../../../Utils/GeneralStyles';
 import AlarmIcon from '../../../components/Alarm';
+import {useNavigation} from '@react-navigation/native';
 
 export default function WeeklyItemsDetails({route}) {
+  const {navigate} = useNavigation();
   const item = route.params.item;
 
   return (
     <ScrollView style={styles.Container}>
-      <AlarmIcon style={styles.AlarmIcon} onPress={() => navigate('Account')} />
       <View style={styles.ImageContainer}>
         <Image
           style={[
@@ -30,7 +31,13 @@ export default function WeeklyItemsDetails({route}) {
           source={{uri: item?.book_image}}
         />
 
-        <Text style={styles.title}>{item?.title}</Text>
+        <View style={styles.ImageInfoContainer}>
+          <Text style={styles.title}>{item?.title}</Text>
+          <AlarmIcon
+            style={styles.AlarmIcon}
+            onPress={() => navigate('Home')}
+          />
+        </View>
         <Text style={styles.author}>{item?.author}</Text>
         <Text style={styles.publisher}>{item?.publisher}</Text>
       </View>
@@ -103,8 +110,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 80,
     height: 80,
-    right: -10,
-    top: 0,
+    right: -100,
+    // top: 0,
   },
 
   ImageContainer: {
@@ -115,38 +122,47 @@ const styles = StyleSheet.create({
   },
   image: {},
 
+  ImageInfoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
   title: {
     fontFamily: fonts.bold,
     fontSize: 20,
-    color: colors.textDark,
+    color: colors.textWarn,
   },
 
   author: {
-    fontFamily: fonts.regular,
+    fontFamily: fonts.bold,
     fontSize: 15,
     color: colors.textDark,
   },
   publisher: {
     fontFamily: fonts.regular,
     fontSize: 15,
-    color: colors.textLight,
+    color: colors.textDark,
   },
 
   descriptionContainer: {
     paddingHorizontal: 20,
-    marginTop: 20,
+    marginTop: 10,
+    paddingTop: 10,
+    gap: 10,
+    borderTopWidth: 1,
+    borderTopColor: colors.secondary,
   },
   description: {
     fontFamily: fonts.regular,
     fontSize: 15,
-    color: colors.textDark,
+    color: colors.textPrimary,
     textAlign: 'justify',
   },
   contributor: {
-    fontFamily: fonts.regular,
+    fontFamily: fonts.light,
     fontSize: 15,
-    color: colors.textLight,
-    textAlign: 'right',
+    color: colors.textSecondary,
+    textAlign: 'center',
   },
 
   ByLinks: {
