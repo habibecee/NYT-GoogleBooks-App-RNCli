@@ -2,53 +2,59 @@ import {
   View,
   Text,
   StyleSheet,
+  Image,
   Dimensions,
   FlatList,
   TouchableOpacity,
   Linking,
-  Image,
 } from 'react-native';
 import React from 'react';
 import {NYT_API_KEY} from '@env';
 import {useNavigation} from '@react-navigation/native';
 import useFetch from '../../../Context/useFetch';
-import {colors, fonts} from '../../../Utils/GeneralStyles';
+import {GeneralStyles, colors, fonts} from '../../../Utils/GeneralStyles';
 
-export default function Article() {
+export default function FeedItems() {
+  //   const section = route.params.section;
   const {navigate} = useNavigation();
   const {data, loading, error} = useFetch(
-    `https://api.nytimes.com/svc/mostpopular/v2/viewed/30.json?api-key=${NYT_API_KEY}`,
+    `https://api.nytimes.com/svc/news/v3/content/all/all.json?api-key=${NYT_API_KEY}`,
   );
+
+  //   const CategoryItems = [];
+
+  //   const FilteredCategoryItems = data?.results?.filter(item =>
+  //     item.section === section ? CategoryItems.push(item) : null,
+  //   );
+
+  //   console.log('CATEGORY ITEMS', CategoryItems);
 
   const renderItem = ({item, index}) => (
     <View style={styles.ItemContainer}>
       <View style={styles.ItemSubInfoContainer}>
-        <Text style={styles.ItemSubsection}>{item?.section}</Text>
+        <Text style={styles.ItemSubsection}>{item?.subsection}</Text>
         <Text style={styles.ItemPublishedDate}>
           {item?.published_date.substring(0, 10)}
         </Text>
       </View>
-      {item?.media?.length > 0 && (
-        <>
-          <View style={styles.ItemImageContainer}>
-            <Image
-              style={styles.ItemImage}
-              source={{uri: item?.media[0]?.['media-metadata'][2]?.url}}
-            />
+      {item?.multimedia && (
+        <View style={styles.ItemImageContainer}>
+          <Image
+            style={styles.ItemImage}
+            source={{uri: item?.multimedia[1].url}}
+          />
+          <View style={styles.ItemImageInfoContainer}>
+            <Text style={styles.ItemImageCaption}>
+              {item?.multimedia[1].caption}
+            </Text>
+            <Text style={styles.ItemImageCopyright}>
+              {item?.multimedia[1].copyright}
+            </Text>
           </View>
-          {item?.media[0]?.caption !== null && (
-            <View style={styles.ItemImageInfoContainer}>
-              <Text style={styles.ItemImageCaption}>
-                {item?.media[0]?.caption}
-              </Text>
-            </View>
-          )}
-        </>
+        </View>
       )}
-
       <View style={styles.ItemInfoContainer}>
         <Text style={styles.ItemTitle}>{item?.title}</Text>
-        <Text style={styles.ItemByline}>{item?.byline}</Text>
         <Text style={styles.ItemAbstract}>
           {item?.abstract}
           <TouchableOpacity onPress={() => Linking.openURL(item?.url)}>
@@ -61,7 +67,6 @@ export default function Article() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.SubTitle}>Last Times Popular Articles</Text>
       <FlatList
         style={styles.FlatList}
         data={data?.results}
@@ -81,15 +86,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: Dimensions.get('window').width,
     padding: 10,
-  },
-
-  SubTitle: {
-    fontFamily: fonts.bold,
-    fontSize: 20,
-    color: colors.primary,
-    textAlign: 'center',
-    marginBottom: 10,
-    marginTop: 10,
   },
 
   FootText: {
@@ -141,14 +137,17 @@ const styles = StyleSheet.create({
   },
 
   ItemImageContainer: {
-    width: '100%',
-    height: 250,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 5,
   },
 
   ItemImage: {
-    width: '100%',
-    height: 250,
+    width: '50%',
+    height: 150,
     resizeMode: 'cover',
+    borderRadius: 10,
   },
 
   ItemImageInfoContainer: {
@@ -159,6 +158,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.light,
     fontSize: 12,
     color: colors.primary,
+    textAlign: 'center',
+  },
+
+  ItemImageCopyright: {
+    fontFamily: fonts.light,
+    fontSize: 12,
+    color: colors.textDark,
     textAlign: 'center',
   },
 
@@ -174,13 +180,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: 16,
     color: colors.textDark,
-    textAlign: 'center',
-  },
-
-  ItemByline: {
-    fontFamily: fonts.regular,
-    fontSize: 12,
-    color: colors.primary,
     textAlign: 'center',
   },
 

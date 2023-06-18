@@ -11,6 +11,8 @@ import {useContext, useEffect} from 'react';
 import {MainContext} from '../Context/Context';
 import MapNavigator from './MapNavigator';
 import MapIcon from '../components/MapIcon';
+import GoogleBooksIcon from '../components/GoogleBooksIcon';
+import BooksNavigator from './BooksNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +35,7 @@ function MainNavigation() {
               justifyContent: 'center',
               alignItems: 'center',
               height: 75,
-              padding: 10,
+              paddingHorizontal: 10,
             },
             tabBarLabelStyle: {
               fontFamily: fonts.bold,
@@ -51,6 +53,15 @@ function MainNavigation() {
             }}
           />
           <Tab.Screen
+            name="Google Books"
+            component={BooksNavigator}
+            options={{
+              headerShown: false,
+
+              tabBarIcon: () => <GoogleBooksIcon />,
+            }}
+          />
+          <Tab.Screen
             name="Maps"
             component={MapNavigator}
             options={{
@@ -60,7 +71,7 @@ function MainNavigation() {
             }}
           />
           <Tab.Screen
-            name="Account Page"
+            name="My Account"
             component={AccountNavigator}
             options={{
               headerShown: false,

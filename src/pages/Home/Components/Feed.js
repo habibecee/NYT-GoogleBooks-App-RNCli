@@ -2,15 +2,13 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   Dimensions,
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import React, {useContext} from 'react';
+import React from 'react';
 import {NYT_API_KEY} from '@env';
 import {useNavigation} from '@react-navigation/native';
-import {MainContext} from '../../../Context/Context';
 import useFetch from '../../../Context/useFetch';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {colors, fonts} from '../../../Utils/GeneralStyles';
@@ -21,10 +19,14 @@ export default function Feed() {
     `https://api.nytimes.com/svc/news/v3/content/section-list.json?api-key=${NYT_API_KEY}`,
   );
 
-  console.log('DATA BOOKS', data);
-
   const renderItem = ({item, index}) => (
-    <TouchableOpacity style={styles.ItemContainer} key={index}>
+    <TouchableOpacity
+      style={styles.ItemContainer}
+      key={index}
+      //   onPress={() =>
+      //     navigate('FeedCategoryItems', {section: item?.display_name})
+      //   }
+    >
       <Text style={styles.ItemTitle}>{item?.display_name}</Text>
       <Icon name="chevron-forward-sharp" size={30} color={colors.primary} />
     </TouchableOpacity>
