@@ -10,15 +10,12 @@ import React, {useContext} from 'react';
 import {GeneralStyles, colors, fonts} from '../../Utils/GeneralStyles';
 import {MainContext} from '../../Context/Context';
 import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import Feed from './Components/Feed';
 import FeedCategoryItems from './Components/FeedItems';
 import Arrow from '../../components/Arrow';
 
 export default function Home() {
   const {navigate} = useNavigation();
-  const {userData, user, ShowItems, showMenu, setShowMenu} =
-    useContext(MainContext);
+  const {ShowItems, showMenu} = useContext(MainContext);
 
   return (
     <View style={[GeneralStyles.container, styles.container]}>
@@ -30,15 +27,23 @@ export default function Home() {
             style={styles.SectionImage}
             source={require('../../../assets/images/NYTLogo.jpeg')}
           />
-          <Text style={styles.SectionTitle}>This Week</Text>
+          <Text style={styles.SectionTitle}>Best Sellers</Text>
         </TouchableOpacity>
 
         <View style={styles.MenuContainer}>
-          <Arrow
-            name="right"
-            onPress={ShowItems}
-            source={require('../../../assets/animations/arrow.json')}
-          />
+          {showMenu ? (
+            <Arrow
+              name="left"
+              onPress={ShowItems}
+              source={require('../../../assets/animations/arrow.json')}
+            />
+          ) : (
+            <Arrow
+              name="right"
+              onPress={ShowItems}
+              source={require('../../../assets/animations/arrow.json')}
+            />
+          )}
 
           {showMenu && (
             <>
@@ -50,15 +55,6 @@ export default function Home() {
                   source={require('../../../assets/images/Archive.jpeg')}
                 />
                 <Text style={styles.SectionTitle}>Archive</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.Sections}
-                onPress={() => navigate('Books')}>
-                <Image
-                  style={styles.SectionImage}
-                  source={require('../../../assets/images/Books.jpeg')}
-                />
-                <Text style={styles.SectionTitle}>Books</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.Sections}
@@ -91,27 +87,25 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.bgLight,
     alignItems: 'center',
-    gap: 20,
   },
 
   SubContainer: {
-    justifyContent: 'space-between',
+    flexDirection: 'row',
     alignItems: 'center',
+    paddingTop: 15,
+    left: -90,
   },
 
   SubText: {
     fontFamily: fonts.bold,
     fontSize: 20,
     color: colors.primary,
-    textAlign: 'left',
-    marginLeft: 20,
-    marginTop: 20,
   },
 
   SectionContainer: {
     flexDirection: 'row',
     width: Dimensions.get('window').width - 40,
-    marginTop: 20,
+    marginTop: 10,
   },
 
   MenuContainer: {
@@ -119,6 +113,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginLeft: 20,
   },
   Sections: {
     alignItems: 'center',

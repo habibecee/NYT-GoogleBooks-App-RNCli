@@ -245,13 +245,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  ItemImageCopyright: {
-    fontFamily: fonts.light,
-    fontSize: 12,
-    color: colors.textDark,
-    textAlign: 'center',
-  },
-
   ItemInfoContainer: {
     marginTop: 10,
     padding: 15,
