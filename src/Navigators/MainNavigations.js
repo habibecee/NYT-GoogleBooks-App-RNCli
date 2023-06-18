@@ -11,8 +11,8 @@ import {useContext, useEffect} from 'react';
 import {MainContext} from '../Context/Context';
 import MapNavigator from './MapNavigator';
 import MapIcon from '../components/MapIcon';
-import GoodReadsNavigator from './GoodReadsNavigator';
-import GoodReadsIcon from '../components/GoodReadsIcon';
+import GoogleBooksIcon from '../components/GoogleBooksIcon';
+import BooksNavigator from './BooksNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,12 +53,12 @@ function MainNavigation() {
             }}
           />
           <Tab.Screen
-            name="GoodReads"
-            component={GoodReadsNavigator}
+            name="Google Books"
+            component={BooksNavigator}
             options={{
               headerShown: false,
 
-              tabBarIcon: () => <GoodReadsIcon />,
+              tabBarIcon: () => <GoogleBooksIcon />,
             }}
           />
           <Tab.Screen

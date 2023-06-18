@@ -1,14 +1,15 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {colors, fonts} from '../Utils/GeneralStyles';
 import HeaderAvatar from '../components/HeaderAvatar';
-import GoodReads from '../pages/GoodReads/GoodReads';
+import Books from '../pages/Books/Books';
+import BookDetails from '../pages/Books/BookDetails';
 
 const Stack = createNativeStackNavigator();
 
-export default function GoodReadsNavigator({route}) {
+export default function BooksNavigator({route}) {
   return (
     <Stack.Navigator
-      initialRouteName="GoodReads"
+      initialRouteName="Books"
       screenOptions={{
         headerTitleStyle: {
           fontFamily: fonts.bold,
@@ -25,11 +26,21 @@ export default function GoodReadsNavigator({route}) {
         },
       }}>
       <Stack.Screen
-        name="GoodReads Page"
-        component={GoodReads}
+        name="Books"
+        component={Books}
         options={{
-          title: 'GoodReads Main Page',
+          title: 'Search Books',
           headerRight: () => <HeaderAvatar />,
+        }}
+      />
+      <Stack.Screen
+        name="BookDetails"
+        component={BookDetails}
+        options={({route}) => {
+          return {
+            title: route?.params?.item?.title,
+            headerRight: () => <HeaderAvatar />,
+          };
         }}
       />
     </Stack.Navigator>
