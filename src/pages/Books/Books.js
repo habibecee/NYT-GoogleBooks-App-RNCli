@@ -7,6 +7,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import axios from 'axios';
 import {colors, fonts} from '../../Utils/GeneralStyles';
@@ -102,10 +103,15 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   searchContainer: {
+    flexDirection: 'row',
     marginBottom: 16,
+    width: Dimensions.get('window').width,
+    paddingHorizontal: 16,
+    marginEnd: 16,
   },
 
   textInput: {
+    flex: 1,
     borderWidth: 1,
     borderColor: colors.dark,
     padding: 10,
@@ -116,11 +122,8 @@ const styles = StyleSheet.create({
   },
 
   searchAnimation: {
-    position: 'absolute',
     width: 50,
     height: 50,
-    right: 0,
-    top: -15,
   },
 
   bookList: {

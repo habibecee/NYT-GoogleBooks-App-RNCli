@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
 
   bookImageContainer: {
     width: Dimensions.get('window').width,
-    height: 300,
+    height: 500,
     backgroundColor: colors.tertiary,
     shadowColor: colors.dark,
     shadowOffset: {
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.7,
     marginBottom: 16,
+    paddingHorizontal: 48,
   },
 
   bookImage: {

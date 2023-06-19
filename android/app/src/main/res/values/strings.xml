@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ZustandProject</string>
+    <string name="GOOGLE_API_KEY">{GOOGLE_API_KEY}</string>
 </resources>
