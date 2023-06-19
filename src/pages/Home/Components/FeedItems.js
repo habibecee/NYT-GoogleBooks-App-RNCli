@@ -27,8 +27,6 @@ export default function FeedItems() {
   //     item.section === section ? CategoryItems.push(item) : null,
   //   );
 
-  //   console.log('CATEGORY ITEMS', CategoryItems);
-
   const renderItem = ({item, index}) => (
     <View style={styles.ItemContainer}>
       <View style={styles.ItemSubInfoContainer}>

@@ -39,7 +39,7 @@ function MainNavigation() {
             },
             tabBarLabelStyle: {
               fontFamily: fonts.bold,
-              fontSize: 18,
+              fontSize: 12,
             },
           })}
           initialRouteName={user ? 'Home' : 'Account Page'}>

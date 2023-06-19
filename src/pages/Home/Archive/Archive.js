@@ -29,8 +29,6 @@ export default function Archive() {
 
   const url = `https://api.nytimes.com/svc/archive/v1/${selectedYear}/${selectedMonth}.json?api-key=${NYT_API_KEY}`;
 
-  console.log('DATA', data?.response?.docs[0]?.abstract);
-
   const handleDateChange = (event, newDate) => {
     if (newDate) {
       setSelectedDate(newDate);
