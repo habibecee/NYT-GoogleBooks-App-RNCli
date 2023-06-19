@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 export default function AccountNavigator() {
   return (
     <Stack.Navigator
-      initialRouteName="Account"
+      initialRouteName="My Account"
       screenOptions={{
         headerTitleStyle: {
           fontFamily: fonts.bold,
@@ -25,7 +25,7 @@ export default function AccountNavigator() {
           size: 20,
         },
       }}>
-      <Stack.Screen name="Account" component={Account} />
+      <Stack.Screen name="My Account" component={Account} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Settings" component={Settings} />
     </Stack.Navigator>

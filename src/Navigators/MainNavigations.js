@@ -17,7 +17,7 @@ import BooksNavigator from './BooksNavigator';
 const Tab = createBottomTabNavigator();
 
 function MainNavigation() {
-  const {user, loading} = useContext(MainContext);
+  const {user, userData, loading} = useContext(MainContext);
 
   if (loading) {
     return <Loading />;
@@ -42,7 +42,7 @@ function MainNavigation() {
               fontSize: 12,
             },
           })}
-          initialRouteName={user ? 'Home' : 'Account Page'}>
+          initialRouteName={userData ? 'Home' : 'My Account'}>
           <Tab.Screen
             name="Home"
             component={HomeNavigator}
@@ -71,7 +71,7 @@ function MainNavigation() {
             }}
           />
           <Tab.Screen
-            name="My Account"
+            name="Account"
             component={AccountNavigator}
             options={{
               headerShown: false,
