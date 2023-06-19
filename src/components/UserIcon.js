@@ -9,7 +9,7 @@ export default function UserIcon() {
   return (
     <TouchableOpacity
       style={GeneralStyles.tabIcon}
-      onPress={() => Navigation.navigate('My Account')}>
+      onPress={() => Navigation.navigate('Account')}>
       <AnimatedLottieView
         source={require('../../assets/animations/user.json')}
         autoPlay

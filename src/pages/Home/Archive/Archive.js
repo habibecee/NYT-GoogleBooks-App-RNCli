@@ -25,16 +25,16 @@ export default function Archive() {
   const [selectedYear, setSelectedYear] = useState('');
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const url = `https://api.nytimes.com/svc/archive/v1/${selectedYear}/${selectedMonth}.json?api-key=${NYT_API_KEY}`;
-
-  console.log('DATA', data?.response?.docs[0]?.abstract);
 
   const handleDateChange = (event, newDate) => {
     if (newDate) {
       setSelectedDate(newDate);
       setSelectedMonth(newDate.getMonth() + 1);
       setSelectedYear(newDate.getFullYear());
+      setShowDatePicker(false);
     }
   };
 
@@ -48,17 +48,45 @@ export default function Archive() {
     } finally {
       setLoading(false);
     }
-  }, [data, url]);
+  }, [url]);
 
   useEffect(() => {
     if (selectedYear && selectedMonth) {
       handleFetchData();
     }
-  }, [handleFetchData]);
+  }, [selectedYear, selectedMonth]);
 
   const handleFetchData = async () => {
     setLoading(true);
     await fetchData();
+  };
+
+  const openDatePicker = () => {
+    if (!showDatePicker) {
+      setShowDatePicker(true);
+    }
+  };
+
+  const closeDatePicker = () => {
+    if (showDatePicker) {
+      setShowDatePicker(false);
+    }
+  };
+
+  const renderDatePicker = () => {
+    if (showDatePicker) {
+      return (
+        <DateTimePicker
+          value={selectedDate}
+          mode="date"
+          display="default"
+          onChange={handleDateChange}
+          maximumDate={new Date()}
+          style={{width: Dimensions.get('window').width}}
+        />
+      );
+    }
+    return null;
   };
 
   const renderItem = ({item}) => (
@@ -103,13 +131,10 @@ export default function Archive() {
   return (
     <View style={[GeneralStyles.container, styles.container]}>
       <View style={styles.datePickerContainer}>
-        <DateTimePicker
-          value={selectedDate}
-          mode="date"
-          display="default"
-          onChange={handleDateChange}
-          maximumDate={new Date()}
-        />
+        <TouchableOpacity onPress={openDatePicker}>
+          <Text>Select Date</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={handleFetchData}>
           <AnimatedLottieView
             style={styles.searchAnimation}
@@ -118,18 +143,19 @@ export default function Archive() {
             loop
           />
         </TouchableOpacity>
+        {renderDatePicker()}
+
+        <Text style={styles.selectedDate}>
+          {selectedDate.toLocaleDateString('tr-TR', {
+            month: 'long',
+            year: 'numeric',
+          })}
+        </Text>
+
+        {selectedYear === '' || selectedMonth === '' ? (
+          <Text style={styles.noDataText}>Please select a date.</Text>
+        ) : null}
       </View>
-
-      <Text style={styles.selectedDate}>
-        {selectedDate.toLocaleDateString('tr-TR', {
-          month: 'long',
-          year: 'numeric',
-        })}
-      </Text>
-
-      {selectedYear === '' || selectedMonth === '' ? (
-        <Text style={styles.noDataText}>Please select a date.</Text>
-      ) : null}
 
       {loading ? (
         <AnimatedLottieView
@@ -157,10 +183,10 @@ export default function Archive() {
           ) : (
             <Text style={styles.noDataText}>API'den veri alınamadı.</Text>
           )}
+
+          <Text style={styles.FootText}> {data?.copyright} </Text>
         </View>
       )}
-
-      <Text style={styles.FootText}> {data?.copyright} </Text>
     </View>
   );
 }
@@ -176,12 +202,9 @@ const styles = StyleSheet.create({
   },
 
   FootText: {
-    position: 'absolute',
-    top: Dimensions.get('window').height / 4,
-    left: Dimensions.get('window').width / 2,
-    transform: [{rotate: '90deg'}],
+    paddingTop: 10,
     fontFamily: fonts.light,
-    fontSize: 13,
+    fontSize: 11,
     color: colors.secondary,
     textAlign: 'justify',
   },
@@ -294,15 +317,14 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     fontSize: 16,
     color: colors.primary,
-    marginLeft: 10,
+    marginLeft: 15,
   },
   datePickerContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
     width: Dimensions.get('window').width,
     height: 50,
-    marginTop: 20,
+    marginBottom: 30,
+    marginTop: 10,
   },
 
   searchAnimation: {
@@ -314,6 +336,8 @@ const styles = StyleSheet.create({
   },
   resultsContainer: {
     flex: 1,
+    marginTop: 20,
+    paddingTop: 20,
   },
 
   noDataText: {

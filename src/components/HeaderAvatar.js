@@ -13,7 +13,7 @@ export default function HeaderAvatar() {
     return (
       <TouchableOpacity
         style={styles.container}
-        onPress={() => navigate('Account Page')}>
+        onPress={() => navigate('Account')}>
         <Image style={styles.Avatar} source={{uri: userData?.avatar}} />
         <Text style={styles.SubText}>{userData?.username}</Text>
       </TouchableOpacity>
@@ -24,7 +24,7 @@ export default function HeaderAvatar() {
     return (
       <TouchableOpacity
         style={styles.container}
-        onPress={() => navigate('Account Page')}>
+        onPress={() => navigate('Account')}>
         <Avatar
           style={styles.Avatar}
           source={require('../../assets/animations/simpleUserIcon.json')}

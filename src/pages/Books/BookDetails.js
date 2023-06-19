@@ -2,7 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   ScrollView,
   Dimensions,
   TouchableOpacity,
@@ -11,21 +10,26 @@ import {
 import React from 'react';
 import {colors, fonts} from '../../Utils/GeneralStyles';
 import AnimatedLottieView from 'lottie-react-native';
+import {WebView} from 'react-native-webview';
 
 export default function BookDetails({route}) {
   const item = route?.params?.item;
 
-  console.log('item', item);
   return (
     <ScrollView style={styles.container}>
-      {/* {item?.volumeInfo?.imageLinks && ( */}
-      <View style={styles.bookImageContainer}>
-        <Image
-          style={styles.bookImage}
-          source={{uri: item?.volumeInfo?.imageLinks?.thumbnail}}
-        />
-      </View>
-      {/* )} */}
+      {item?.volumeInfo?.imageLinks?.thumbnail ? (
+        <View style={styles.bookImageContainer}>
+          <WebView
+            source={{uri: item?.volumeInfo?.imageLinks?.thumbnail}}
+            style={styles.bookImage}
+          />
+        </View>
+      ) : (
+        <View style={styles.bookImageContainer}>
+          <Text style={styles.bookNoAvailable}>No image available</Text>
+        </View>
+      )}
+
       <View style={styles.bookInfoContainer}>
         <Text style={styles.bookTitle}>{item?.volumeInfo?.title}</Text>
 
@@ -57,7 +61,8 @@ export default function BookDetails({route}) {
           {item?.volumeInfo?.description}
         </Text>
 
-        <TouchableOpacity onPress={() => Linking.openURL(item?.infoLink)}>
+        <TouchableOpacity
+          onPress={() => Linking.openURL(item?.volumeInfo?.infoLink)}>
           <AnimatedLottieView
             style={styles.searchAnimation}
             source={require('../../../assets/animations/google-play-books.json')}
@@ -79,21 +84,39 @@ const styles = StyleSheet.create({
 
   bookImageContainer: {
     width: Dimensions.get('window').width,
-    height: 300,
-    backgroundColor: colors.tertiary,
+    height: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.tertiary,
     shadowColor: colors.dark,
+    backgroundColor: colors.bgLight,
     shadowOffset: {
       width: 0,
       height: 0,
     },
     shadowOpacity: 0.7,
     marginBottom: 16,
+    paddingHorizontal: 48,
   },
 
   bookImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: Dimensions.get('window').width / 2 - 60,
+    maxHeight: 200,
+    // resizeMode: 'contain',
+  },
+
+  bookNoAvailable: {
+    width: Dimensions.get('window').width / 2 - 60,
+    height: 200,
+    paddingTop: 75,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.tertiary,
+    fontFamily: fonts.regular,
+    fontSize: 18,
+    color: colors.secondary,
+    textAlign: 'center',
   },
   bookInfoContainer: {
     flex: 1,

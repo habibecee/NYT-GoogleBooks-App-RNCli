@@ -12,7 +12,6 @@ export default function Maps() {
   const {data, loading, error} = useFetch(
     'https://random-data-api.com/api/v2/users?size=16',
   );
-  console.log('userData', userData);
 
   const mapRef = useRef();
 

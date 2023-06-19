@@ -93,12 +93,9 @@ const styles = StyleSheet.create({
   },
 
   FootText: {
-    position: 'absolute',
-    top: Dimensions.get('window').height / 4,
-    left: Dimensions.get('window').width / 2,
-    transform: [{rotate: '90deg'}],
+    paddingTop: 10,
     fontFamily: fonts.light,
-    fontSize: 13,
+    fontSize: 11,
     color: colors.secondary,
     textAlign: 'justify',
   },

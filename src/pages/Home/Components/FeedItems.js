@@ -27,8 +27,6 @@ export default function FeedItems() {
   //     item.section === section ? CategoryItems.push(item) : null,
   //   );
 
-  //   console.log('CATEGORY ITEMS', CategoryItems);
-
   const renderItem = ({item, index}) => (
     <View style={styles.ItemContainer}>
       <View style={styles.ItemSubInfoContainer}>
@@ -89,12 +87,9 @@ const styles = StyleSheet.create({
   },
 
   FootText: {
-    position: 'absolute',
-    top: Dimensions.get('window').height / 4,
-    left: Dimensions.get('window').width / 2,
-    transform: [{rotate: '90deg'}],
+    paddingTop: 10,
     fontFamily: fonts.light,
-    fontSize: 13,
+    fontSize: 11,
     color: colors.secondary,
     textAlign: 'justify',
   },
@@ -106,7 +101,7 @@ const styles = StyleSheet.create({
   ItemContainer: {
     marginHorizontal: 10,
     marginBottom: 20,
-    backgroundColor: colors.light,
+    backgroundColor: colors.tertiary,
     shadowColor: colors.dark,
     shadowOffset: {
       width: 0,

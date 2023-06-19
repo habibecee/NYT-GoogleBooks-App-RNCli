@@ -17,6 +17,7 @@ export default function BooksNavigator({route}) {
         },
         headerStyle: {
           backgroundColor: colors.tertiary,
+          alignItems: 'center',
         },
         headerTintColor: colors.textDark,
         headerBackTitleStyle: {
@@ -38,7 +39,7 @@ export default function BooksNavigator({route}) {
         component={BookDetails}
         options={({route}) => {
           return {
-            title: route?.params?.item?.title,
+            title: route?.params?.item?.volumeInfo?.title,
             headerRight: () => <HeaderAvatar />,
           };
         }}

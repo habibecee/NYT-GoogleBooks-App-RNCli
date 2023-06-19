@@ -20,7 +20,7 @@ import Button from '../../components/Button';
 
 export default function Settings({route}) {
   const uid = route.params.uid;
-  console.log('UID BURADAAAA uid', uid);
+
   const {
     showInput,
     showAvatarUrl,
@@ -37,8 +37,6 @@ export default function Settings({route}) {
     dbCheck(uid).then(userData => {
       setUserData(userData);
     });
-
-    console.log('userData', userData);
   }, []);
 
   return (

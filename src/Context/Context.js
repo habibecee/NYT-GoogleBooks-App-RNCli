@@ -218,19 +218,10 @@ const MainContextProvider = ({children}) => {
 
     setUser(userData);
 
-    console.log('UPDATEEEEEEE User data: ', userData);
-
     setTimeout(() => {
       NativeModules.DevSettings.reload();
     }, 800);
   };
-
-  // async function updateEmailVerified() {
-  //   user
-  //     ?.sendEmailVerification()
-  //     .then(console.log('Email sent!'))
-  //     .catch(error => console.log('Error', error));
-  // }
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -245,7 +236,6 @@ const MainContextProvider = ({children}) => {
     dbCheck(user?.data?.uid).then(userData => {
       setUserData(userData);
     });
-    console.log('userData', userData);
   }, []);
 
   return (

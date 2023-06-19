@@ -4,13 +4,14 @@ import {
   TextInput,
   FlatList,
   Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import axios from 'axios';
 import {colors, fonts} from '../../Utils/GeneralStyles';
 import AnimatedLottieView from 'lottie-react-native';
+import {WebView} from 'react-native-webview';
 import {useNavigation} from '@react-navigation/native';
 import Arrow from '../../components/Arrow';
 
@@ -43,12 +44,16 @@ const Books = () => {
       <TouchableOpacity
         style={styles.bookContainer}
         onPress={() => navigate('BookDetails', {item: item})}>
-        {/* {bookInfo?.imageLinks && ( */}
-        <Image
-          style={styles.bookCover}
-          source={{uri: bookInfo?.imageLinks?.thumbnail}}
-        />
-        {/* )} */}
+        {bookInfo?.imageLinks?.thumbnail ? (
+          <WebView
+            source={{uri: bookInfo?.imageLinks?.thumbnail}}
+            style={styles.bookCover}
+          />
+        ) : (
+          <View style={styles.bookNoAvailableContainer}>
+            <Text style={styles.bookNoAvailable}>No image available</Text>
+          </View>
+        )}
         <View style={styles.bookDetails}>
           <Text style={styles.bookTitle}>{bookInfo?.title}</Text>
           {bookInfo?.authors && (
@@ -102,10 +107,15 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   searchContainer: {
+    flexDirection: 'row',
     marginBottom: 16,
+    width: Dimensions.get('window').width,
+    paddingHorizontal: 16,
+    marginEnd: 16,
   },
 
   textInput: {
+    flex: 1,
     borderWidth: 1,
     borderColor: colors.dark,
     padding: 10,
@@ -116,11 +126,8 @@ const styles = StyleSheet.create({
   },
 
   searchAnimation: {
-    position: 'absolute',
     width: 50,
     height: 50,
-    right: 0,
-    top: -15,
   },
 
   bookList: {
@@ -144,9 +151,31 @@ const styles = StyleSheet.create({
     height: 120,
     resizeMode: 'cover',
     marginRight: 8,
+    borderRadius: 10,
+  },
+
+  bookNoAvailableContainer: {
+    width: 100,
+    height: 120,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: colors.secondary,
+    borderRadius: 10,
+  },
+
+  bookNoAvailable: {
+    fontFamily: fonts.regular,
+    fontSize: 14,
+    color: colors.textLight,
+    textAlign: 'center',
   },
   bookDetails: {
     flex: 1,
+    minWidth: Dimensions.get('window').width - 320,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
   bookTitle: {
     fontFamily: fonts.bold,
